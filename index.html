@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Library Management</h1>
+        <form id="bookForm" class="mb-4">
+            <div class="form-group">
+                <label for="title">Book Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author" name="author" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="bookTableBody">
+                <!-- Dynamic content will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let books = [];
+        let idCounter = 1;
+
+        document.getElementById('bookForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+
+            const newBook = { id: idCounter++, title, author };
+            books.push(newBook);
+
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+
+            renderBooks();
+        });
+
+        function renderBooks() {
+            const bookTableBody = document.getElementById('bookTableBody');
+            bookTableBody.innerHTML = '';
+
+            books.forEach(book => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td><button class="btn btn-danger" onclick="deleteBook(${book.id})">Delete</button></td>
+                `;
+                bookTableBody.appendChild(tr);
+            });
+        }
+
+        function deleteBook(id) {
+            books = books.filter(book => book.id !== id);
+            renderBooks();
+        }
+    </script>
+</body>
+</ht
